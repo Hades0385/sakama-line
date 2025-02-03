@@ -1,5 +1,5 @@
 const axios = require('axios')
-const moment = require('moment')
+const moment = require("moment-timezone");
 require('dotenv').config({ path: '../.env' });
 
 const CWA_API = process.env.CWA_API;
@@ -138,9 +138,9 @@ const icon = {
 }
 
 function timeCheck(time) {
-  const timestamp = moment(time, "YYYY-MM-DD HH:mm:ss");
-  const hours = timestamp.hours();
-  let currentHour = moment().hour();
+  const timestamp = moment.tz(time, "YYYY-MM-DD HH:mm:ss", "Asia/Taipei"); 
+  const hours = timestamp.hours(); 
+  let currentHour = moment().tz("Asia/Taipei").hour(); 
   let i = currentHour - hours + 1;
   return i;
 }
