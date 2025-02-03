@@ -14,7 +14,7 @@ module.exports = {
       commandFiles.forEach(file => {
         const command = require(`./${file}`);
         let aliasesText = command.aliases ? `（別名: ${command.aliases.join(", ")}）` : "";
-        helpMessage += `🔹 **!${command.name}** ${aliasesText}\n   ➥ ${command.description || "無描述"}\n\n`;
+        helpMessage += `🔹 !${command.name} ${aliasesText}\n   ➥ ${command.description || "無描述"}\n\n`;
       });
 
       await client.replyMessage(event.replyToken, {

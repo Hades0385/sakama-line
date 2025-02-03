@@ -33,13 +33,13 @@ module.exports = {
             let messageText = `🌤️ ${country} 未來 3 小時天氣預報\n\n`;
 
             for (let i = 0; i < 3; i++) {
-              messageText += `🕒 ${tTime(temp[t + i].DataTime)}\n`;
+              messageText += `🕒 ${temp[t + i].DataTime}\n`;
               messageText += `🌡️ ${temp[t + i].ElementValue[0].Temperature}°C(${ci[t+i].ElementValue[0].ComfortIndexDescription})\n`;
               messageText += `💧 ${pop3[Math.floor((t + i) / 3)].ElementValue[0].ProbabilityOfPrecipitation}%\n`;
               messageText += `${icon[wx[Math.floor(t+i / 3)].ElementValue[0].Weather]} ${wx[Math.floor((t + i) / 3)].ElementValue[0].Weather}\n`;
               messageText += `-------------------\n`;
             }
-            
+            messageText += `\nCWA`;
             const textMessage = {
               type: "text",
               text: messageText
@@ -56,11 +56,6 @@ module.exports = {
 
 async function getData(areas,twon) {
   return axios.get(`https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-${areas}?Authorization=${CWA_API}&limit=1&format=JSON&LocationName=${twon}`)
-}
-
-function tTime(timeString) {
-  const timestamp = moment(timeString, "YYYY-MM-DD HH:mm:ss").unix();
-  return `<t:${timestamp}:d><t:${timestamp}:t>`;  
 }
 
 const area = {

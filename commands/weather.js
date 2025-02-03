@@ -23,13 +23,9 @@ module.exports = {
       let sr = gtData.Sunrise
       let ss = gtData.Sunset
 
-      let wtt = w50.Title
-      let wc = contentLength(w50.Content)
-      let sunBar = bar(sunPercent(sr,ss,`${Hour}:${Minute}`))
-
       await client.replyMessage(event.replyToken, {
         type: "text",
-        text: `${args}目前氣溫 ${temp} \u00B0 C\n\n體感溫度: ${at}\n相對溼度: ${rh}\n時雨量: ${rain}\n日出時間: ${sr}\n日落時間: ${ss}\n\n資料來源: CWA`
+        text: `${args}目前氣溫 ${temp} \u00B0 C\n\n體感溫度: ${at}\u00B0 C\n相對溼度: ${rh}%\n時雨量: ${rain}mm\n日出時間: ${sr}\n日落時間: ${ss}\n\n資料來源: CWA`
       });
       
     } catch (error) {
@@ -162,54 +158,4 @@ function getDateTime() {
   let Minute = String(Math.floor(currentMinute / 10) * 10).padStart(2, '0');
 
   return {year,month,day,Hour,Minute};
-}
-
-function sunPercent(sunriseTime, sunsetTime, currentTime) {
-  const parseTimeToUnix = (timeStr) => {
-    return moment(timeStr, 'HH:mm').valueOf(); 
-  };
-  const sunriseUnix = parseTimeToUnix(sunriseTime);
-  const sunsetUnix = parseTimeToUnix(sunsetTime);
-  const nowUnix = parseTimeToUnix(currentTime);
-
-  if (nowUnix < sunriseUnix) {
-    return 0;
-  }
-  if (nowUnix > sunsetUnix) {
-    return 100;
-  }
-
-  const totalDaylight = sunsetUnix - sunriseUnix;
-  const elapsed = nowUnix - sunriseUnix;
-  const percentage = (elapsed / totalDaylight) * 100;
-  return percentage;
-}
-
-function bar(percent) {
-  if (percent === 100) {
-    const state = '已日落';
-    return state
-  }else if (percent === 0) {
-    const state = '尚未日出'; 
-    return state
-  }else{
-  const totalBlocks = 20;
-  const filledBlocks = Math.floor((percent / 100) * totalBlocks); 
-  const emptyBlocks = totalBlocks - filledBlocks; 
-  const progressBar = '-'.repeat(filledBlocks-1) + '☀' + '-'.repeat(emptyBlocks) ;
-  return progressBar
-  }
-}
-
-function toUnix(timeString) {
-  const timestamp = moment(timeString, "HH:mm").unix();
-  return `<t:${timestamp}:R>`; 
-}
-
-function contentLength(data) {
-  if (data.length > 2) {
-    return data[1]
-  } else {
-    return data[0]
-  }
 }

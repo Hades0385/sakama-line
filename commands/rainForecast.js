@@ -16,12 +16,12 @@ module.exports = {
         let time = rainData[0].timestamp;
         let description = `⚠️ 預警標準：\n` +
         `未來 1 小時內可能發生 10mm/10分鐘 或 40mm/1小時 的降雨量\n` +
-        `🌧️ 此資訊僅供參考，實際降雨請以氣象署公告為主\n\n`;
+        `此資訊僅供參考，實際降雨請以氣象署公告為主\n\n`;
 
-        let messageText = `🌧️ **推估未來 1 小時內會發生大雨的鄉鎮列表**\n\n` + description;
+        let messageText = `🌧️ 推估未來 1 小時內會發生大雨的鄉鎮列表\n\n` + description;
 
         if (rainForecast.length === 0) {
-          messageText += `✅ 目前 **無預警縣市**`;
+          messageText += `✅ 目前 無預警縣市\n`;
         } else {
           // 按照城市分組
           const groupedData = rainForecast.reduce((acc, item) => {
@@ -34,21 +34,21 @@ module.exports = {
 
           if (city) {
             if (groupedData[city]) {
-              messageText = `🌧️ **推估 ${city} 未來 1 小時內會發生大雨的鄉鎮**\n\n` + description;
-              messageText += `📍 **${city}**\n🏘️ ` + groupedData[city].join("、");
+              messageText = `🌧️ 推估 ${city} 未來 1 小時內會發生大雨的鄉鎮\n\n` + description;
+              messageText += `📍 ${city}\n🏘️ ` + groupedData[city].join("、");
             } else {
-              messageText = `🌧️ **推估 ${city} 未來 1 小時內會發生大雨的鄉鎮**\n\n` + description;
-              messageText += `✅ 目前 **${city} 無預警鄉鎮**`;
+              messageText = `🌧️ 推估 ${city} 未來 1 小時內會發生大雨的鄉鎮\n\n` + description;
+              messageText += `✅ 目前 ${city} 無預警鄉鎮`;
             }
           } else {
             for (const [cityName, towns] of Object.entries(groupedData)) {
-              messageText += `📍 **${cityName}**\n🏘️ ` + towns.join("、") + `\n\n`;
+              messageText += `📍 ${cityName}\n🏘️ ` + towns.join("、") + `\n\n`;
             }
           }
         }
 
         // 加上資料來源 & 時間
-        messageText += `\n🕒 **最近更新時間:** ${time}\n**資料來源:** 國家災害防救科技中心 - 氣象組`;
+        messageText += `\n\n🕒 最近更新時間: ${time}\n資料來源: 國家災害防救科技中心 - 氣象組`;
 
         const textMessage = {
           type: "text",

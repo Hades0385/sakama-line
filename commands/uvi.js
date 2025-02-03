@@ -15,13 +15,13 @@ module.exports = {
       let uvi = dataLength[dataLength.length-1].y
       let uvilv = uvilevel(uvi)
       let sg = suggestion[uvilv]
-      let messageText = `☀️ **紫外線資訊**\n\n`;
-        messageText += `📍 **地區:** ${county}\n`;
-        messageText += `🕒 **資料時間:** ${dataTime}\n\n`;
-        messageText += `🌞 **UVI 指數:** ${uvi}\n`;
-        messageText += `⚠️ **等級:** ${uvilv}\n\n`;
-        messageText += `📢 **建議:**\n> ${description[uvilv]}\n${sg}\n\n`;
-        messageText += `**資料來源:** CWA (測站: ${sitename})`;
+      let messageText = `☀️ 紫外線資訊\n\n`;
+        messageText += `📍 地區: ${county}\n`;
+        messageText += `🕒 資料時間: ${dataTime}\n\n`;
+        messageText += `🌞 UVI 指數: ${uvi}\n`;
+        messageText += `⚠️ 等級: ${uvilv}\n\n`;
+        messageText += `📢 建議:\n> ${description[uvilv]}\n${sg}\n\n`;
+        messageText += `資料來源: CWA (測站: ${sitename})`;
 
       const textMessage = {
         type: "text",
