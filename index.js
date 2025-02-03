@@ -23,6 +23,7 @@ app.post("/webhook", line.middleware(config), (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-  console.log(`LINE Bot 伺服器運行於 http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`伺服器已啟動，正在監聽 ${PORT}`);
 });
+
