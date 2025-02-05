@@ -7,48 +7,55 @@ module.exports = {
   aliases: ["aq","空品"],
   description: "查詢空氣品質，使用說明:!aq <測站名>",
   execute: async (args, client, event) => {
-    try{
-      const aqData = await getData(sites[args[0]],MOE_API)
-      const apiData = aqData.data.records[0]
-      let dataTime = apiData.publishtime
-      let sitename = apiData.sitename
-      let county = apiData.county
-      let aqi = apiData.aqi
-      let status = apiData.status
-      let so2 = apiData.so2
-      let co = apiData.co
-      let o3 = apiData.o3
-      let pm10 = apiData.pm10
-      let pm25 = apiData["pm2.5"]
-      let no2 = apiData.no2
-
-      let messageText = `🌍 空氣品質資訊\n\n` +
-        `📍 監測站: ${county} / ${sitename}\n` +
-        `🕒 時間: ${dataTime}\n\n` +
-        `🌫️ AQI 指數: ${aqi}\n` +
-        `📊 狀態: ${status}\n` +
-        `----------------------\n` +
-        `🌬️ PM2.5: ${pm25} μg/m³\n` +
-        `🌪️ PM10: ${pm10} μg/m³\n` +
-        `🟢 臭氧 (O3): ${o3} ppb\n` +
-        `🛑 一氧化碳 (CO): ${co} ppm\n` +
-        `🟡 二氧化硫 (SO2): ${so2} ppb\n` +
-        `🔴 二氧化氮 (NO2): ${no2} ppb\n\n` +
-        `資料來源: MOE`;
-
-      const textMessage = {
+    if (!sites[args[0]]){
+      await client.replyMessage(event.replyToken, {
         type: "text",
-        text: messageText
-      };
+        text: `❌無效的測站名稱: ${args[0]}`
+      });
+    }else{
+      try{
+        const aqData = await getData(sites[args[0]],MOE_API)
+        const apiData = aqData.data.records[0]
+        let dataTime = apiData.publishtime
+        let sitename = apiData.sitename
+        let county = apiData.county
+        let aqi = apiData.aqi
+        let status = apiData.status
+        let so2 = apiData.so2
+        let co = apiData.co
+        let o3 = apiData.o3
+        let pm10 = apiData.pm10
+        let pm25 = apiData["pm2.5"]
+        let no2 = apiData.no2
 
-      await client.replyMessage(event.replyToken, textMessage);
+        let messageText = `🌍 空氣品質資訊\n\n` +
+          `📍 監測站: ${county} / ${sitename}\n` +
+          `🕒 時間: ${dataTime}\n\n` +
+          `🌫️ AQI 指數: ${aqi}\n` +
+          `📊 狀態: ${colors[status]}${status}\n` +
+          `----------------------\n` +
+          `🌬️ PM2.5: ${pm25} μg/m³\n` +
+          `🌪️ PM10: ${pm10} μg/m³\n` +
+          `🟢 臭氧 (O3): ${o3} ppb\n` +
+          `🛑 一氧化碳 (CO): ${co} ppm\n` +
+          `🟡 二氧化硫 (SO2): ${so2} ppb\n` +
+          `🔴 二氧化氮 (NO2): ${no2} ppb\n\n` +
+          `資料來源: MOE`;
 
-    } catch (error) {
-      // await client.replyMessage(event.replyToken, {
-      //   type: "text",
-      //   text: "❌發生錯誤，請稍後再試"
-      // });
-      console.log(error)
+        const textMessage = {
+          type: "text",
+          text: messageText
+        };
+
+        await client.replyMessage(event.replyToken, textMessage);
+
+      } catch (error) {
+        await client.replyMessage(event.replyToken, {
+          type: "text",
+          text: "❌發生錯誤，請稍後再試"
+        });
+        console.log(error)
+      }
     }
   },
 };
@@ -143,4 +150,13 @@ const sites = {
 
 async function getData(site,MOE_API){
   return axios.get(`https://data.moenv.gov.tw/api/v2/aqx_p_432?language=zh&offset=${site}&api_key=${MOE_API}`)
+}
+
+const colors = {
+  "良好" : '🟩',
+  "普通" : '🟨',
+  "對敏感族群不健康" : '🟧',
+  "對所有族群不健康" : '🟥',
+  "非常不健康" : '🟪',
+  "危害" : '🟫',
 }

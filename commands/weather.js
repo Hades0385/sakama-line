@@ -25,14 +25,14 @@ module.exports = {
 
       await client.replyMessage(event.replyToken, {
         type: "text",
-        text: `${args}目前氣溫 ${temp} \u00B0 C\n\n體感溫度: ${at}\u00B0 C\n相對溼度: ${rh}%\n時雨量: ${rain}mm\n日出時間: ${sr}\n日落時間: ${ss}\n\n資料來源: CWA`
+        text: `📍 ${args}\n🌡️ 目前氣溫 ${temp} \u00B0 C\n\n🌡️ 體感溫度: ${at}\u00B0 C\n💧 相對溼度: ${rh}%\n🌧️時雨量: ${rain}mm\n🌄日出時間: ${sr}\n🌆日落時間: ${ss}\n\n資料來源: CWA`
       });
       
     } catch (error) {
-      // await client.replyMessage(event.replyToken, {
-      //   type: "text",
-      //   text: "❌發生錯誤，無法取得資訊，請檢查輸入是否正確"
-      // });
+      await client.replyMessage(event.replyToken, {
+        type: "text",
+        text: "❌發生錯誤，無法取得資訊，請檢查輸入是否正確"
+      });
       console.log(error)
     }
   },

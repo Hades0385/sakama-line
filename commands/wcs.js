@@ -44,7 +44,7 @@ module.exports = {
         }
       });
 
-      let messageText = `⚠️ **天然災害停止上班及上課情形**\n\n`;
+      let messageText = `⚠️ 天然災害停止上班及上課情形\n\n`;
 
       if (results.length === 0) {
         messageText += `✅ 目前無停班停課訊息。\n`;
@@ -52,11 +52,11 @@ module.exports = {
         if (citys) {
           const cityData = results.find(result => result.city === citys);
           if (cityData) {
-            messageText = `⚠️ **${citys} 天然災害停止上班及上課情形**\n\n`;
-            messageText += `📍 **${cityData.city}**\n🏫 ${cityData.suspension}`;
+            messageText = `⚠️ ${citys} 天然災害停止上班及上課情形\n\n`;
+            messageText += `📍 ${cityData.city}\n🏫 ${cityData.suspension}`;
           } else {
-            messageText = `⚠️ **${citys} 天然災害停止上班及上課情形**\n\n`;
-            messageText += `✅ 目前 **${citys} 無停班課訊息**`;
+            messageText = `⚠️ ${citys} 天然災害停止上班及上課情形\n\n`;
+            messageText += `✅ 目前 ${citys} 無停班課訊息`;
           }
         } else {
           for (const { city, suspension } of results) {
@@ -65,7 +65,7 @@ module.exports = {
         }
       }
 
-      messageText += `\n🕒 **更新時間:** ${updateTime}\n**資料來源:** 行政院人事行政總處`;
+      messageText += `\n🕒 更新時間: ${updateTime}\n資料來源: 行政院人事行政總處`;
 
       const textMessage = {
         type: "text",

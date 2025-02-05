@@ -23,8 +23,16 @@ module.exports = async (commandName, args, client, event) => {
       await commands[commandName].execute(args, client, event);
     } catch (err) {
       console.error(`執行指令 ${commandName} 時發生錯誤:`, err);
+      await client.replyMessage(event.replyToken, {
+        type: "text",
+        text: `❌ 執行指令 ${commandName} 時發生錯誤，請稍後再試`
+      });
     }
   } else {
     console.log(`未識別的指令: ${commandName}`);
+    await client.replyMessage(event.replyToken, {
+      type: "text",
+      text: `❌ 未識別的指令: ${commandName}\n使用「!help」來查詢指令`
+    });
   }
 };

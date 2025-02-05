@@ -22,10 +22,10 @@ module.exports = {
         text: helpMessage.trim(),
       });
     } catch (error) {
-      // await client.replyMessage(event.replyToken, {
-      //   type: "text",
-      //   text: "❌獲取指令清單時發生錯誤，請稍後再試"
-      // });
+      await client.replyMessage(event.replyToken, {
+        type: "text",
+        text: "❌獲取指令清單時發生錯誤，請稍後再試"
+      });
       console.log(error)
     }
   },

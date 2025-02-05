@@ -31,10 +31,10 @@ module.exports = {
       await client.replyMessage(event.replyToken, textMessage);
 
     } catch (error) {
-      // await client.replyMessage(event.replyToken, {
-      //   type: "text",
-      //   text: "❌發生錯誤，請稍後再試"
-      // });
+      await client.replyMessage(event.replyToken, {
+        type: "text",
+        text: "❌發生錯誤，請稍後再試"
+      });
       console.log(error)
     }
   },

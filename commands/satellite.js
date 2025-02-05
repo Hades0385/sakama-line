@@ -1,19 +1,19 @@
 module.exports = {
-  name: "radar",
-  aliases: ["r","雷達"],
-  description: "查詢雷達迴波圖，使用說明:!r",
+  name: "satellite",
+  aliases: ["sa","衛星"],
+  description: "查詢衛星影像，使用說明:!sa",
   execute: async (args, client, event) => {
     try{
       const { year, month, day, Hour, Minute } = getDateTime();
-
+      
       const imageMessage = {
         type: "image",
-        originalContentUrl: `https://www.cwa.gov.tw/Data/radar/CV1_TW_1000_${year}${month}${day}${Hour}${Minute}.png`,
-        previewImageUrl: `https://www.cwa.gov.tw/Data/radar/CV1_TW_1000_${year}${month}${day}${Hour}${Minute}.png`
+        originalContentUrl: `https://www.cwa.gov.tw/Data/satellite/LCC_IR1_CR_2750/LCC_IR1_CR_2750-${year}-${month}-${day}-${Hour}-${Minute}.jpg`,
+        previewImageUrl: `https://www.cwa.gov.tw/Data/satellite/LCC_IR1_CR_2750/LCC_IR1_CR_2750-${year}-${month}-${day}-${Hour}-${Minute}.jpg`
       };
       
       await client.replyMessage(event.replyToken, imageMessage);
-      
+
     } catch (error) {
       await client.replyMessage(event.replyToken, {
         type: "text",
@@ -31,7 +31,7 @@ function getDateTime() {
   const utcMonth = today.getUTCMonth(); 
   const utcDay = today.getUTCDate();
   let utcHour = today.getUTCHours();
-  let utcMinute = today.getUTCMinutes() - 10;
+  let utcMinute = today.getUTCMinutes() - 20;
 
   if (utcMinute < 0) {
     utcMinute += 60;

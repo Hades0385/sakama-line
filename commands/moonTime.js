@@ -1,19 +1,40 @@
+const axios = require('axios')
+const CWA_API = process.env.CWA_API
+
 module.exports = {
-  name: "radar",
-  aliases: ["r","雷達"],
-  description: "查詢雷達迴波圖，使用說明:!r",
+  name: "moon",
+  aliases: ["mt","月出","月落"],
+  description: "查詢月出月落時間，使用說明:!mt <縣市>",
   execute: async (args, client, event) => {
     try{
-      const { year, month, day, Hour, Minute } = getDateTime();
+      const  { year, month, day, Hour, Minute }  = getDateTime();
+      const time = `${year}-${month}-${day}`
+      const response = await getData(args[0],time)
+      let apiData = response.data.records.locations.location[0].time[0];
+      let apiInfo = response.data.records.locations.location[0];
+      let data = apiData.Date;
+      let moonr = apiData.MoonRiseTime;
+      let moons = apiData.MoonTransitTime	;
+      let country = apiInfo.CountyName
 
+      let messageText = `🌕 ${country} 月出月落時間\n` +
+        `🕒 資料時間: ${data}\n\n` +
+        `🌘 月出時間: ${moonr}\n` +
+        `🌒 月落時間: ${moons}\n\n` +
+        `資料來源: CWA`;
+      
       const imageMessage = {
         type: "image",
-        originalContentUrl: `https://www.cwa.gov.tw/Data/radar/CV1_TW_1000_${year}${month}${day}${Hour}${Minute}.png`,
-        previewImageUrl: `https://www.cwa.gov.tw/Data/radar/CV1_TW_1000_${year}${month}${day}${Hour}${Minute}.png`
+        originalContentUrl: `https://www.cwa.gov.tw/Data/astronomy/moon/${year}${month}${day}.jpg`,
+        previewImageUrl: `https://www.cwa.gov.tw/Data/astronomy/moon/${year}${month}${day}.jpg`
       };
-      
-      await client.replyMessage(event.replyToken, imageMessage);
-      
+      const textMessage = {
+        type: "text",
+        text: messageText
+      };
+
+      await client.replyMessage(event.replyToken, [textMessage, imageMessage]);
+
     } catch (error) {
       await client.replyMessage(event.replyToken, {
         type: "text",
@@ -24,6 +45,13 @@ module.exports = {
   },
 };
 
+async function getData(args,todayData) {
+  return axios.get(`
+  https://opendata.cwa.gov.tw/api/v1/rest/datastore/A-B0063-001?Authorization=${CWA_API}&limit=1&format=JSON&CountyName=${args}&Date=${todayData}
+  `);
+}
+
+
 function getDateTime() {
   const today = new Date();
 
@@ -31,7 +59,7 @@ function getDateTime() {
   const utcMonth = today.getUTCMonth(); 
   const utcDay = today.getUTCDate();
   let utcHour = today.getUTCHours();
-  let utcMinute = today.getUTCMinutes() - 10;
+  let utcMinute = today.getUTCMinutes();
 
   if (utcMinute < 0) {
     utcMinute += 60;

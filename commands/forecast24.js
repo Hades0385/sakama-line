@@ -3,9 +3,9 @@ const moment = require("moment-timezone");
 const CWA_API = process.env.CWA_API;
 
 module.exports = {
-  name: "forecast",
-  aliases: ["f","預報"],
-  description: "查詢未來3小時天氣預報，使用說明:!f <鄉鎮市區>",
+  name: "forecast24",
+  aliases: ["f24","預報24"],
+  description: "查詢未來24小時天氣預報，使用說明:!f24 <鄉鎮市區>",
   execute: async (args, client, event) => {
     let areas,twon;
     if (args.length === 2) {
@@ -33,9 +33,9 @@ module.exports = {
           let wx = apiData[8].Time;
           let country = apiInfo.LocationName
           let t = timeCheck(temp[0].DataTime)
-          let messageText = `🌤️ ${country} 未來 3 小時天氣預報\n\n`;
+          let messageText = `🌤️ ${country} 未來24小時(每6小時)天氣預報\n\n`;
 
-          for (let i = 0; i < 3; i++) {
+          for (let i = 0; i < 24; i+=6) {
             messageText += `🕒 ${tTime(temp[t+i].DataTime)}\n`;
             messageText += `🌡️ ${temp[t + i].ElementValue[0].Temperature}°C(${ci[t+i].ElementValue[0].ComfortIndexDescription})\n`;
             messageText += `💧 ${pop3[Math.floor((t + i) / 3)].ElementValue[0].ProbabilityOfPrecipitation}%\n`;

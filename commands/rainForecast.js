@@ -46,8 +46,6 @@ module.exports = {
             }
           }
         }
-
-        // 加上資料來源 & 時間
         messageText += `\n\n🕒 最近更新時間: ${time}\n資料來源: 國家災害防救科技中心 - 氣象組`;
 
         const textMessage = {
@@ -58,11 +56,11 @@ module.exports = {
         await client.replyMessage(event.replyToken, textMessage);
 
       })
-      .catch((error) => {
-        // await client.replyMessage(event.replyToken, {
-        //   type: "text",
-        //   text: "❌發生錯誤，請稍後再試"
-        // });
+      .catch(async (error) => {
+        await client.replyMessage(event.replyToken, {
+          type: "text",
+          text: "❌發生錯誤，請稍後再試"
+        });
         console.error(error);
       });
   },
